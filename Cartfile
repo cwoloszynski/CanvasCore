@@ -1,4 +1,5 @@
-git “https://github.com/cwoloszynski/Cache"
-git “https://github.com/cwoloszynski/Crypto"
-git “https://github.com/cwoloszynski/CanvasKit" 
-git “https://github.com/cwoloszynski/CanvasText" 
+git “https://github.com/cwoloszynski/Cache.git”
+git “https://github.com/cwoloszynski/Crypto.git”
+git “https://github.com/cwoloszynski/CanvasKit.git” 
+git “https://github.com/cwoloszynski/CanvasText.git”
+ 
