@@ -7,44 +7,46 @@
 //
 
 import CanvasKit
-import SAMKeychain
+// import SAMKeychain
 
-public class AccountController {
+open class AccountController {
 
 	// MARK: - Properties
 
-	public var currentAccount: Account? {
+	open var currentAccount: Account? {
 		didSet {
-			if let account = currentAccount, data = try? NSJSONSerialization.dataWithJSONObject(account.dictionary, options: []) {
-				SAMKeychain.setPasswordData(data, forService: "Canvas", account: "Account")
+			if let account = currentAccount, let _ = try? JSONSerialization.data(withJSONObject: account.dictionary, options: []) {
+				// SAMKeychain.setPasswordData(data, forService: "Canvas", account: "Account")
 			} else {
-				SAMKeychain.deletePasswordForService("Canvas", account: "Account")
-				NSUserDefaults.standardUserDefaults().removeObjectForKey("Organizations")
-				NSUserDefaults.standardUserDefaults().removeObjectForKey("SelectedOrganization")
+				// SAMKeychain.deletePasswordForService("Canvas", account: "Account")
+				UserDefaults.standard.removeObject(forKey: "Organizations")
+				UserDefaults.standard.removeObject(forKey: "SelectedOrganization")
 			}
 
-			NSNotificationCenter.defaultCenter().postNotificationName(self.dynamicType.accountDidChangeNotificationName, object: nil)
+			NotificationCenter.default.post(name: Notification.Name(rawValue: type(of: self).accountDidChangeNotificationName), object: nil)
 		}
 	}
 
-	public static let accountDidChangeNotificationName = "AccountController.accountDidChangeNotification"
+	open static let accountDidChangeNotificationName = "AccountController.accountDidChangeNotification"
 
-	public static let sharedController = AccountController()
+	open static let sharedController = AccountController()
 
 
 	// MARK: - Initializers
 
 	init() {
-		guard let data = SAMKeychain.passwordDataForService("Canvas", account: "Account") else { return }
+		/* guard let data = SAMKeychain.passwordDataForService("Canvas", account: "Account") else { return }
 
-		guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
-			dictionary = json as? JSONDictionary,
-			account = Account(dictionary: dictionary)
+		guard let json = try? JSONSerialization.JSONObjectWithData(data, options: []),
+			let dictionary = json as? JSONDictionary,
+			let account = Account(dictionary: dictionary)
 		else {
 			SAMKeychain.deletePasswordForService("Canvas", account: "Account")
 			return
 		}
 
 		currentAccount = account
+        */
+        return
 	}
 }
