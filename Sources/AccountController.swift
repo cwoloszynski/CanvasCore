@@ -8,6 +8,7 @@
 
 import CanvasKit
 // import SAMKeychain
+import CloudKit
 
 open class AccountController {
 
@@ -23,7 +24,11 @@ open class AccountController {
 				UserDefaults.standard.removeObject(forKey: "SelectedOrganization")
 			}
 
-			NotificationCenter.default.post(name: Notification.Name(rawValue: type(of: self).accountDidChangeNotificationName), object: nil)
+            // Make sure we do this on the main thread, since this call seems to propagate the 
+            // event on the same thread as it is posted on.
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: type(of: self).accountDidChangeNotificationName), object: nil)
+            }
 		}
 	}
 
@@ -31,22 +36,71 @@ open class AccountController {
 
 	open static let sharedController = AccountController()
 
+    private var group: DispatchGroup
+    private var recordID: CKRecordID?
+    
 
 	// MARK: - Initializers
 
 	init() {
-		/* guard let data = SAMKeychain.passwordDataForService("Canvas", account: "Account") else { return }
-
-		guard let json = try? JSONSerialization.JSONObjectWithData(data, options: []),
-			let dictionary = json as? JSONDictionary,
-			let account = Account(dictionary: dictionary)
-		else {
-			SAMKeychain.deletePasswordForService("Canvas", account: "Account")
-			return
-		}
-
-		currentAccount = account
-        */
+        
+        group = DispatchGroup()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(identityDidChange), name: NSNotification.Name.NSUbiquityIdentityDidChange, object: nil)
+        
+        updateAccountStatus()
+        
         return
 	}
+    
+    private func updateAccountStatus() {
+        let container = CKContainer.default()
+        group.enter()
+        container.fetchUserRecordID { (recordID, error) -> Void in
+            if error == nil, let recordID = recordID {
+                self.recordID = recordID
+                self.fetchTribalUsername(container.publicCloudDatabase, recordID: recordID) { (Void) -> Void in
+                    self.group.leave()
+                }
+            } else {
+                self.group.leave()
+            }
+        }
+    }
+    
+    public static let TribalUsers = "TribalUsers"
+    public static let ICloudRecordName = "iCloudRecordName"
+    public static let UsernameField = "username"
+    
+    private func fetchTribalUsername(_ database: CKDatabase, recordID: CKRecordID, completionHandler: @escaping (Void) -> (Void)) {
+    
+        let predicate = NSPredicate(format:"%K == %@", AccountController.ICloudRecordName, recordID.recordName)
+        let query = CKQuery(recordType: AccountController.TribalUsers, predicate: predicate)
+        database.perform(query, inZoneWith: nil) { (results, error) -> Void in
+            
+            defer {
+                completionHandler()
+            }
+            
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            if results == nil || results?.count == 0 {
+                print("No records found for \(AccountController.ICloudRecordName): \(recordID.recordName)")
+                return
+            }
+            
+            if error == nil, let result = results?.first, let username = result.object(forKey: AccountController.UsernameField) as? String {
+                let account = Account(recordID: recordID, username: username)
+                self.currentAccount = account
+            }
+        }
+    }
+    
+    @objc private func identityDidChange() {
+        updateAccountStatus()
+    }
+
 }
