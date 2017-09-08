@@ -1,5 +1,5 @@
 //
-//  Organization+CanvasCore.swift
+//  Project+CanvasCore.swift
 //  CanvasCore
 //
 //  Created by Sam Soffes on 8/30/16.
@@ -8,7 +8,7 @@
 
 import CanvasKit
 
-public extension Organization {
+public extension Project {
 	public var isPersonalNotes: Bool {
 		guard let account = AccountController.sharedController.currentAccount else { return false }
 		return slug == account.user.username

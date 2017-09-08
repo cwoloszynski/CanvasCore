@@ -14,7 +14,7 @@ public final class SearchController: NSObject {
 
 	// MARK: - Properties
 
-	public let organizationID: String
+	public let projectID: String
 
 	/// Results are delivered to this callback
 	public var callback: (([Canvas]) -> Void)?
@@ -32,9 +32,9 @@ public final class SearchController: NSObject {
 
 	// MARK: - Initializers
 
-	public init(client: APIClient, organizationID: String) {
+	public init(client: APIClient, projectID: String) {
 		self.client = client
-		self.organizationID = organizationID
+		self.projectID = projectID
 
 		super.init()
 
@@ -61,7 +61,7 @@ public final class SearchController: NSObject {
 
 			guard let query = self?.nextQuery,
 				let client = self?.client,
-				let organizationID = self?.organizationID
+				let projectID = self?.projectID
 			else {
 				semaphore.signal()
 				return
@@ -71,7 +71,7 @@ public final class SearchController: NSObject {
 
 			let callback = self?.callback
 
-            client.searchCanvases(organizationID, query: query) { result in
+            client.searchCanvases(projectID, query: query) { result in
 				DispatchQueue.main.async() {
 					switch result {
 					case .success(let canvases): callback?(canvases)

@@ -20,8 +20,8 @@ open class AccountController {
 				// SAMKeychain.setPasswordData(data, forService: "Canvas", account: "Account")
 			} else {
 				// SAMKeychain.deletePasswordForService("Canvas", account: "Account")
-				UserDefaults.standard.removeObject(forKey: "Organizations")
-				UserDefaults.standard.removeObject(forKey: "SelectedOrganization")
+				UserDefaults.standard.removeObject(forKey: "Projects")
+				UserDefaults.standard.removeObject(forKey: "SelectedProject")
 			}
  
             let userDefaults = UserDefaults.standard

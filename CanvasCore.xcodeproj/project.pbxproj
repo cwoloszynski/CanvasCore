@@ -82,8 +82,8 @@
 		217C55921D42D3C70064A2AD /* OperationalTransformation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 217C554E1D42CFEE0064A2AD /* OperationalTransformation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		217C55941D42D3C70064A2AD /* Starscream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 217C55501D42CFEE0064A2AD /* Starscream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		217C55951D42D3C70064A2AD /* X.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 217C55511D42CFEE0064A2AD /* X.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		2189B7601D75C9D400D39165 /* Organization+CanvasCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189B75F1D75C9D400D39165 /* Organization+CanvasCore.swift */; };
-		2189B7611D75C9D400D39165 /* Organization+CanvasCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189B75F1D75C9D400D39165 /* Organization+CanvasCore.swift */; };
+		2189B7601D75C9D400D39165 /* Project+CanvasCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189B75F1D75C9D400D39165 /* Project+CanvasCore.swift */; };
+		2189B7611D75C9D400D39165 /* Project+CanvasCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189B75F1D75C9D400D39165 /* Project+CanvasCore.swift */; };
 		219501271D58B591003F5E94 /* URLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219501261D58B591003F5E94 /* URLHelper.swift */; };
 		219501281D58B591003F5E94 /* URLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219501261D58B591003F5E94 /* URLHelper.swift */; };
 		219D23081D171B4900D32F65 /* Accountable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219D22FD1D171B4900D32F65 /* Accountable.swift */; };
@@ -464,12 +464,12 @@
 		216B1CAC1D1719F6007D022B /* CursorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorTests.swift; sourceTree = "<group>"; };
 		217309FF1D46F3C9001B63D7 /* SAMKeychain.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SAMKeychain.framework; path = Carthage/Build/iOS/SAMKeychain.framework; sourceTree = "<group>"; };
 		21730A011D46F3D5001B63D7 /* SAMKeychain.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SAMKeychain.framework; path = Carthage/Build/Mac/SAMKeychain.framework; sourceTree = "<group>"; };
-		2175D2FC1D172262009C6845 /* AccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountController.swift; sourceTree = "<group>"; };
+		2175D2FC1D172262009C6845 /* AccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AccountController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2175D31A1D1722AD009C6845 /* CanvasCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CanvasCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2175D3231D1722AE009C6845 /* CanvasCoreTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CanvasCoreTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2175D3441D172320009C6845 /* Cursor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cursor.swift; sourceTree = "<group>"; };
 		2175D3481D17236D009C6845 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
-		2175D5351D173933009C6845 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2175D5351D173933009C6845 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		217C55311D42CFDC0064A2AD /* Cache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cache.framework; path = Carthage/Build/iOS/Cache.framework; sourceTree = "<group>"; };
 		217C55321D42CFDC0064A2AD /* CanvasKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CanvasKit.framework; path = Carthage/Build/iOS/CanvasKit.framework; sourceTree = "<group>"; };
 		217C55331D42CFDC0064A2AD /* CanvasNative.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CanvasNative.framework; path = Carthage/Build/iOS/CanvasNative.framework; sourceTree = "<group>"; };
@@ -491,7 +491,7 @@
 		217C55511D42CFEE0064A2AD /* X.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = X.framework; path = Carthage/Build/Mac/X.framework; sourceTree = "<group>"; };
 		217C55781D42D3740064A2AD /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = Carthage/Build/iOS/Crypto.framework; sourceTree = "<group>"; };
 		217C55881D42D3B80064A2AD /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = Carthage/Build/Mac/Crypto.framework; sourceTree = "<group>"; };
-		2189B75F1D75C9D400D39165 /* Organization+CanvasCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Organization+CanvasCore.swift"; sourceTree = "<group>"; };
+		2189B75F1D75C9D400D39165 /* Project+CanvasCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Project+CanvasCore.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		219501261D58B591003F5E94 /* URLHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLHelper.swift; sourceTree = "<group>"; };
 		219D22FD1D171B4900D32F65 /* Accountable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Accountable.swift; sourceTree = "<group>"; };
 		219D22FE1D171B4900D32F65 /* AvatarsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarsController.swift; sourceTree = "<group>"; };
@@ -500,7 +500,7 @@
 		219D23011D171B4900D32F65 /* Imgix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Imgix.swift; sourceTree = "<group>"; };
 		219D23021D171B4900D32F65 /* ImgixController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImgixController.swift; sourceTree = "<group>"; };
 		219D23031D171B4900D32F65 /* LightTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightTheme.swift; sourceTree = "<group>"; };
-		219D23041D171B4900D32F65 /* LocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
+		219D23041D171B4900D32F65 /* LocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LocalizedString.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		219D23051D171B4900D32F65 /* PresenceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenceController.swift; sourceTree = "<group>"; };
 		219D23061D171B4900D32F65 /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		219D23071D171B4900D32F65 /* SpaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpaceView.swift; sourceTree = "<group>"; };
@@ -683,7 +683,7 @@
 		2189B7621D75C9EA00D39165 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				2189B75F1D75C9D400D39165 /* Organization+CanvasCore.swift */,
+				2189B75F1D75C9D400D39165 /* Project+CanvasCore.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1329,7 +1329,7 @@
 				219D23081D171B4900D32F65 /* Accountable.swift in Sources */,
 				2175D5291D173753009C6845 /* SearchController.swift in Sources */,
 				2175D4F51D1736FD009C6845 /* SpaceView.swift in Sources */,
-				2189B7601D75C9D400D39165 /* Organization+CanvasCore.swift in Sources */,
+				2189B7601D75C9D400D39165 /* Project+CanvasCore.swift in Sources */,
 				2175D3491D17236D009C6845 /* Configuration.swift in Sources */,
 				213BA1DB1D58E1C400A51B07 /* RemoteCursorsController.swift in Sources */,
 				2175D3451D172320009C6845 /* Cursor.swift in Sources */,
@@ -1365,7 +1365,7 @@
 				2175D3311D1722CA009C6845 /* AccountController.swift in Sources */,
 				2175D5281D173753009C6845 /* SearchController.swift in Sources */,
 				2175D4D11D1736FC009C6845 /* SpaceView.swift in Sources */,
-				2189B7611D75C9D400D39165 /* Organization+CanvasCore.swift in Sources */,
+				2189B7611D75C9D400D39165 /* Project+CanvasCore.swift in Sources */,
 				2175D34A1D172370009C6845 /* Configuration.swift in Sources */,
 				2175D3471D17232A009C6845 /* Cursor.swift in Sources */,
 				2175D52A1D1737DC009C6845 /* ImgixController.swift in Sources */,

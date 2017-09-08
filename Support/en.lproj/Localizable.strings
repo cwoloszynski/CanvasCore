@@ -13,9 +13,9 @@
 "LOGIN_BUTTON" = "Log In";
 
 
-// ----- Organizations -----
+// ----- Projects -----
 
-"ORGANIZATIONS_TITLE" = "Organizations";
+"ORGANIZATIONS_TITLE" = "Projects";
 "PERSONAL_NOTES" = "Personal Notes";
 "LOG_OUT_BUTTON" = "Log Out";
 "ACCOUNT_BUTTON" = "Account";

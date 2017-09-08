@@ -15,14 +15,14 @@ public enum LocalizedString {
 	case passwordPlaceholder
 	case logInButton
 
-	// Organizations
-	case organizationsTitle
+	// Projects
+	case projectsTitle
 	case personalNotes
 	case accountButton
 	case logOutButton
 
 	// Canvases
-	case searchIn(organizationName: String)
+	case searchIn(projectName: String)
 	case searchCommand
 	case inPersonalNotes
 	case newCanvasCommand
@@ -90,12 +90,12 @@ public enum LocalizedString {
 		case .passwordPlaceholder: return string("PASSWORD_PLACEHOLDER")
 		case .logInButton: return string("LOGIN_BUTTON")
 
-		case .organizationsTitle: return string("ORGANIZATIONS_TITLE")
+		case .projectsTitle: return string("ORGANIZATIONS_TITLE")
 		case .personalNotes: return string("PERSONAL_NOTES")
 		case .accountButton: return string("ACCOUNT_BUTTON")
 		case .logOutButton: return string("LOG_OUT_BUTTON")
 
-		case .searchIn(let organizationName): return String(format: string("SEARCH_IN_ORGANIZATION"), arguments: [organizationName])
+		case .searchIn(let projectName): return String(format: string("SEARCH_IN_ORGANIZATION"), arguments: [projectName])
 		case .searchCommand: return string("SEARCH_COMMAND")
 		case .inPersonalNotes: return string("IN_PERSONAL_NOTES")
 		case .newCanvasCommand: return string("NEW_CANVAS_COMMAND")
