@@ -23,8 +23,17 @@ open class AccountController {
 				UserDefaults.standard.removeObject(forKey: "Organizations")
 				UserDefaults.standard.removeObject(forKey: "SelectedOrganization")
 			}
+ 
+            let userDefaults = UserDefaults.standard
+            if let account = currentAccount {
+                userDefaults.set(account.user.username, forKey: AccountController.UsernameField)
+                userDefaults.set(account.recordName, forKey: AccountController.ICloudRecordName)
+            } else {
+                userDefaults.removeObject(forKey: AccountController.UsernameField)
+                userDefaults.removeObject(forKey: AccountController.ICloudRecordName)
+            }
 
-            // Make sure we do this on the main thread, since this call seems to propagate the 
+            // Make sure we do this on the main thread, since this call seems to propagate the
             // event on the same thread as it is posted on.
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: type(of: self).accountDidChangeNotificationName), object: nil)
@@ -113,7 +122,7 @@ open class AccountController {
                         }
                     } else {
                         // Only one account present, so we are good
-                        let account = Account(recordID: recordID, username: username)
+                        let account = Account(recordName: recordID.recordName, username: username)
                         DispatchQueue.main.async {
                             self.currentAccount = account
                             completion(nil)
@@ -124,7 +133,21 @@ open class AccountController {
         }
     }
     
+    // We need to cache the account information locally in case we are not able to get online.
+    // We also need to confirm that the cached information is correct, so we will check it when
+    // we are able to access the cloud servers.
+    
     private func updateAccountStatus() {
+        
+        let username = UserDefaults.standard.string(forKey: AccountController.UsernameField)
+        let recordName = UserDefaults.standard.string(forKey: AccountController.ICloudRecordName)
+        
+        // If we know the current account information, create an account and set it
+        if let username = username, let recordName = recordName {
+            let account = Account(recordName: recordName, username: username)
+            self.currentAccount = account
+        }
+        
         let container = CKContainer.default()
         group.enter()
         container.fetchUserRecordID { (recordID, error) -> Void in
@@ -165,8 +188,15 @@ open class AccountController {
             }
             
             if error == nil, let result = results?.first, let username = result.object(forKey: AccountController.UsernameField) as? String {
-                let account = Account(recordID: recordID, username: username)
-                self.currentAccount = account
+                // Check if this is different than the current account, if set.
+                
+                if let current = self.currentAccount {
+                    if current.recordName == recordID.recordName &&  current.user.username == username {
+                        // No need to update the currentAccount
+                        return
+                    }
+                }
+                self.currentAccount = Account(recordName: recordID.recordName, username: username)
             }
         }
     }
