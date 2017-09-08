@@ -60,21 +60,66 @@ open class AccountController {
         let record = CKRecord(recordType: AccountController.TribalUsers)
         record[AccountController.ICloudRecordName] = recordID.recordName as CKRecordValue
         record[AccountController.UsernameField] = username as CKRecordValue
+        record[AccountController.RegistrationDateField] = NSDate() as CKRecordValue
         let container = CKContainer.default()
         let database = container.publicCloudDatabase
         
         database.save(record) { (record, error) -> Void in
             
             if let error = error {
-                // FIXME:  This needs to handle errors better.
-                let errorMsg = "Unspecified Error: \(error.localizedDescription)"
-                completion(errorMsg)
+                completion("Unexpected error: \(error.localizedDescription)")
+                return
             }
             
-            let account = Account(recordID: recordID, username: username)
-            DispatchQueue.main.async {
-                self.currentAccount = account
-                completion(nil)
+            guard let record = record else {
+                fatalError("Save did not return record on success")
+            }
+            
+            // The save() call might need to complete before we can count on queries have the
+            // results of its action, so we async the following
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(2000)) {
+                // The delay above is a kludge.  But it allows the work to proceed and it is not
+                // in the critical, daily-use path so an additional 2 seconds may just be good enough.
+                // Need to make sure that the username is unique.  Since it does not appear to be possible
+                // to force a constraint, we will just see if we created the first entry with that username
+                // or if we are later.  If later, then we will delete the record and tell the user
+                
+                let predicate = NSPredicate(format:"%K == %@", AccountController.UsernameField, username)
+                let query = CKQuery(recordType: AccountController.TribalUsers, predicate: predicate)
+                query.sortDescriptors = [NSSortDescriptor(key: AccountController.RegistrationDateField, ascending: true)]
+                database.perform(query, inZoneWith: nil) { (results, error) -> Void in
+
+                    if let error = error {
+                        completion("Unexpected error: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let results = results, let first = results.first else {
+                        // This should never happen, but sometimes the timing at the database causes this to fail.
+                        // So, we delete the created entry and ask the user to try again.  Not very nice
+                        // but the best we have until I determine a better way to confirm a unique entry
+                        database.delete(withRecordID: record.recordID) { (recordID, error) -> Void in
+                            completion("Unexpected error:  please try again")
+                        }
+                        return
+                    }
+                    
+                    let firstCreated = first[AccountController.ICloudRecordName] as? String
+                    if firstCreated != recordID.recordName {
+                        
+                        database.delete(withRecordID: record.recordID) { (recordID, error) -> Void in
+                            completion("Username not available")
+                        }
+                    } else {
+                        // Only one account present, so we are good
+                        let account = Account(recordID: recordID, username: username)
+                        DispatchQueue.main.async {
+                            self.currentAccount = account
+                            completion(nil)
+                        }
+                    }
+                }
             }
         }
     }
@@ -97,6 +142,7 @@ open class AccountController {
     public static let TribalUsers = "TribalUsers"
     public static let ICloudRecordName = "iCloudRecordName"
     public static let UsernameField = "username"
+    public static let RegistrationDateField = "registrationDate"
     
     private func fetchTribalUsername(_ database: CKDatabase, recordID: CKRecordID, completionHandler: @escaping (Void) -> (Void)) {
     
