@@ -184,6 +184,9 @@ open class AccountController {
             
             if results == nil || results?.count == 0 {
                 print("No records found for \(AccountController.ICloudRecordName): \(recordID.recordName)")
+                // FIXME: May need to delete locally cached data when this happens, or when a new username is registered
+                // Not sure yet, since the iCloud account is still logged in.  
+                self.currentAccount = nil
                 return
             }
             
