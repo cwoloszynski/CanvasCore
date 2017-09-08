@@ -53,6 +53,32 @@ open class AccountController {
         return
 	}
     
+    public func createAccount(username: String, completion: @escaping (String?) -> Void) {
+        
+        guard let recordID = recordID else { return }
+        
+        let record = CKRecord(recordType: AccountController.TribalUsers)
+        record[AccountController.ICloudRecordName] = recordID.recordName as CKRecordValue
+        record[AccountController.UsernameField] = username as CKRecordValue
+        let container = CKContainer.default()
+        let database = container.publicCloudDatabase
+        
+        database.save(record) { (record, error) -> Void in
+            
+            if let error = error {
+                // FIXME:  This needs to handle errors better.
+                let errorMsg = "Unspecified Error: \(error.localizedDescription)"
+                completion(errorMsg)
+            }
+            
+            let account = Account(recordID: recordID, username: username)
+            DispatchQueue.main.async {
+                self.currentAccount = account
+                completion(nil)
+            }
+        }
+    }
+    
     private func updateAccountStatus() {
         let container = CKContainer.default()
         group.enter()
