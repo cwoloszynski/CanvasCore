@@ -14,23 +14,31 @@ open class AccountController {
 
 	// MARK: - Properties
 
+    public enum Keys {
+        public static let TribalUsers = "TribalUsers"
+        public static let CloudRecordName = "iCloudRecordName"
+        public static let UsernameField = "username"
+        public static let RegistrationDateField = "registrationDate"
+    }
+
+    
 	open var currentAccount: Account? {
 		didSet {
 			if let account = currentAccount, let _ = try? JSONSerialization.data(withJSONObject: account.dictionary, options: []) {
 				// SAMKeychain.setPasswordData(data, forService: "Canvas", account: "Account")
 			} else {
 				// SAMKeychain.deletePasswordForService("Canvas", account: "Account")
-				UserDefaults.standard.removeObject(forKey: "Projects")
-				UserDefaults.standard.removeObject(forKey: "SelectedProject")
+				// UserDefaults.standard.removeObject(forKey: "Projects")
+				// UserDefaults.standard.removeObject(forKey: "SelectedProject")
 			}
  
             let userDefaults = UserDefaults.standard
             if let account = currentAccount {
-                userDefaults.set(account.user.username, forKey: AccountController.UsernameField)
-                userDefaults.set(account.recordName, forKey: AccountController.ICloudRecordName)
+                userDefaults.set(account.user.username, forKey: AccountController.Keys.UsernameField)
+                userDefaults.set(account.recordName, forKey: AccountController.Keys.CloudRecordName)
             } else {
-                userDefaults.removeObject(forKey: AccountController.UsernameField)
-                userDefaults.removeObject(forKey: AccountController.ICloudRecordName)
+                userDefaults.removeObject(forKey: AccountController.Keys.UsernameField)
+                userDefaults.removeObject(forKey: AccountController.Keys.CloudRecordName)
             }
 
             // Make sure we do this on the main thread, since this call seems to propagate the
@@ -66,10 +74,10 @@ open class AccountController {
         
         guard let recordID = recordID else { return }
         
-        let record = CKRecord(recordType: AccountController.TribalUsers)
-        record[AccountController.ICloudRecordName] = recordID.recordName as CKRecordValue
-        record[AccountController.UsernameField] = username as CKRecordValue
-        record[AccountController.RegistrationDateField] = NSDate() as CKRecordValue
+        let record = CKRecord(recordType: AccountController.Keys.TribalUsers)
+        record[AccountController.Keys.CloudRecordName] = recordID.recordName as CKRecordValue
+        record[AccountController.Keys.UsernameField] = username as CKRecordValue
+        record[AccountController.Keys.RegistrationDateField] = NSDate() as CKRecordValue
         let container = CKContainer.default()
         let database = container.publicCloudDatabase
         
@@ -94,9 +102,9 @@ open class AccountController {
                 // to force a constraint, we will just see if we created the first entry with that username
                 // or if we are later.  If later, then we will delete the record and tell the user
                 
-                let predicate = NSPredicate(format:"%K == %@", AccountController.UsernameField, username)
-                let query = CKQuery(recordType: AccountController.TribalUsers, predicate: predicate)
-                query.sortDescriptors = [NSSortDescriptor(key: AccountController.RegistrationDateField, ascending: true)]
+                let predicate = NSPredicate(format:"%K == %@", AccountController.Keys.UsernameField, username)
+                let query = CKQuery(recordType: AccountController.Keys.TribalUsers, predicate: predicate)
+                query.sortDescriptors = [NSSortDescriptor(key: AccountController.Keys.RegistrationDateField, ascending: true)]
                 database.perform(query, inZoneWith: nil) { (results, error) -> Void in
 
                     if let error = error {
@@ -114,7 +122,7 @@ open class AccountController {
                         return
                     }
                     
-                    let firstCreated = first[AccountController.ICloudRecordName] as? String
+                    let firstCreated = first[AccountController.Keys.CloudRecordName] as? String
                     if firstCreated != recordID.recordName {
                         
                         database.delete(withRecordID: record.recordID) { (recordID, error) -> Void in
@@ -139,8 +147,8 @@ open class AccountController {
     
     private func updateAccountStatus() {
         
-        let username = UserDefaults.standard.string(forKey: AccountController.UsernameField)
-        let recordName = UserDefaults.standard.string(forKey: AccountController.ICloudRecordName)
+        let username = UserDefaults.standard.string(forKey: AccountController.Keys.UsernameField)
+        let recordName = UserDefaults.standard.string(forKey: AccountController.Keys.CloudRecordName)
         
         // If we know the current account information, create an account and set it
         if let username = username, let recordName = recordName {
@@ -162,15 +170,11 @@ open class AccountController {
         }
     }
     
-    public static let TribalUsers = "TribalUsers"
-    public static let ICloudRecordName = "iCloudRecordName"
-    public static let UsernameField = "username"
-    public static let RegistrationDateField = "registrationDate"
     
     private func fetchTribalUsername(_ database: CKDatabase, recordID: CKRecordID, completionHandler: @escaping (Void) -> (Void)) {
     
-        let predicate = NSPredicate(format:"%K == %@", AccountController.ICloudRecordName, recordID.recordName)
-        let query = CKQuery(recordType: AccountController.TribalUsers, predicate: predicate)
+        let predicate = NSPredicate(format:"%K == %@", AccountController.Keys.CloudRecordName, recordID.recordName)
+        let query = CKQuery(recordType: AccountController.Keys.TribalUsers, predicate: predicate)
         database.perform(query, inZoneWith: nil) { (results, error) -> Void in
             
             defer {
@@ -183,14 +187,14 @@ open class AccountController {
             }
             
             if results == nil || results?.count == 0 {
-                print("No records found for \(AccountController.ICloudRecordName): \(recordID.recordName)")
+                print("No records found for \(AccountController.Keys.CloudRecordName): \(recordID.recordName)")
                 // FIXME: May need to delete locally cached data when this happens, or when a new username is registered
                 // Not sure yet, since the iCloud account is still logged in.  
                 self.currentAccount = nil
                 return
             }
             
-            if error == nil, let result = results?.first, let username = result.object(forKey: AccountController.UsernameField) as? String {
+            if error == nil, let result = results?.first, let username = result.object(forKey: AccountController.Keys.UsernameField) as? String {
                 // Check if this is different than the current account, if set.
                 
                 if let current = self.currentAccount {
