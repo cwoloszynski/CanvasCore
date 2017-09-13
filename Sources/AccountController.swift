@@ -16,21 +16,14 @@ open class AccountController {
 
     public enum Keys {
         public static let TribalUsers = "TribalUsers"
-        public static let CloudRecordName = "iCloudRecordName"
+        public static let CloudRecordName = "CloudRecordName"
         public static let UsernameField = "username"
         public static let RegistrationDateField = "registrationDate"
     }
 
     
 	open var currentAccount: Account? {
-		didSet {
-			if let account = currentAccount, let _ = try? JSONSerialization.data(withJSONObject: account.dictionary, options: []) {
-				// SAMKeychain.setPasswordData(data, forService: "Canvas", account: "Account")
-			} else {
-				// SAMKeychain.deletePasswordForService("Canvas", account: "Account")
-				// UserDefaults.standard.removeObject(forKey: "Projects")
-				// UserDefaults.standard.removeObject(forKey: "SelectedProject")
-			}
+        didSet {
  
             let userDefaults = UserDefaults.standard
             if let account = currentAccount {
@@ -72,7 +65,10 @@ open class AccountController {
     
     public func createAccount(username: String, completion: @escaping (String?) -> Void) {
         
-        guard let recordID = recordID else { return }
+        guard let recordID = recordID else {
+            completion("An iCloud account is needed to create a Tribal username")
+            return
+        }
         
         let record = CKRecord(recordType: AccountController.Keys.TribalUsers)
         record[AccountController.Keys.CloudRecordName] = recordID.recordName as CKRecordValue
@@ -165,7 +161,26 @@ open class AccountController {
                     self.group.leave()
                 }
             } else {
-                self.group.leave()
+                // Error in getting the user's ID. Either we are not logged into iCloud or the network comms are broken.
+                // Let's determine the issue.
+                
+                CKContainer.default().accountStatus { (accountStatus, error) in
+                    switch accountStatus {
+                        
+                    case .available:
+                        print("iCloud Available")
+                    case .noAccount:
+                        print("no iCloud Account")
+                        // set the account to nil to start the onboarding process
+                        self.currentAccount = nil
+                        
+                    case .couldNotDetermine:
+                        print("Could not determine")
+                    case .restricted:
+                        print("Restricted")
+                    }
+                    self.group.leave()
+                }
             }
         }
     }
@@ -209,6 +224,7 @@ open class AccountController {
     }
     
     @objc private func identityDidChange() {
+        print("identity did change")
         updateAccountStatus()
     }
 
