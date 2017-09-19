@@ -21,6 +21,7 @@ open class AccountController {
         public static let RegistrationDateField = "registrationDate"
     }
 
+    public private(set) var isCloudKitEnabled: Bool = false
     
 	open var currentAccount: Account? {
         didSet {
@@ -29,9 +30,11 @@ open class AccountController {
             if let account = currentAccount {
                 userDefaults.set(account.user.username, forKey: AccountController.Keys.UsernameField)
                 userDefaults.set(account.recordName, forKey: AccountController.Keys.CloudRecordName)
+                userDefaults.synchronize()
             } else {
                 userDefaults.removeObject(forKey: AccountController.Keys.UsernameField)
                 userDefaults.removeObject(forKey: AccountController.Keys.CloudRecordName)
+                userDefaults.synchronize()
             }
 
             // Make sure we do this on the main thread, since this call seems to propagate the
@@ -56,12 +59,18 @@ open class AccountController {
         
         group = DispatchGroup()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(identityDidChange), name: NSNotification.Name.NSUbiquityIdentityDidChange, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(identityDidChange), name: NSNotification.Name.NSUbiquityIdentityDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(identityDidChange), name: NSNotification.Name.CKAccountChanged, object: nil)
         
         updateAccountStatus()
         
         return
 	}
+    
+    public func createLocalAccount() {
+        let account = Account(recordName: "", username: "Local")
+        self.currentAccount = account
+    }
     
     public func createAccount(username: String, completion: @escaping (String?) -> Void) {
         
@@ -152,6 +161,14 @@ open class AccountController {
             self.currentAccount = account
         }
         
+        // Only check on account status if the account is a CloudKit account.  If we already have a local
+        // account, we don't need to react to this account change.
+        if let account = currentAccount, account.isLocal { return }
+        
+        // However, if the CloudKit account is no longer available, we need to know this
+        // and adjust the app's behavior.  If the account is no longer available, the account 
+        // will be set to nil.  This may cause the RootViewController to start on-boarding again!
+        
         let container = CKContainer.default()
         group.enter()
         container.fetchUserRecordID { (recordID, error) -> Void in
@@ -169,15 +186,18 @@ open class AccountController {
                         
                     case .available:
                         print("iCloud Available")
+                        self.isCloudKitEnabled = true
                     case .noAccount:
                         print("no iCloud Account")
                         // set the account to nil to start the onboarding process
                         self.currentAccount = nil
-                        
+                        self.isCloudKitEnabled = false
                     case .couldNotDetermine:
                         print("Could not determine")
+                        self.isCloudKitEnabled = false
                     case .restricted:
                         print("Restricted")
+                        self.isCloudKitEnabled = false
                     }
                     self.group.leave()
                 }
