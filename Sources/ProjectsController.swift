@@ -58,9 +58,15 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
     
     public func setSelectedProject(_ project: Project?) {
         if let project = project {
-            UserDefaults.standard.set(project.id, forKey: ProjectsController.UserKeys.selectedProjectId)
+            DispatchQueue.main.async {
+                UserDefaults.standard.set(project.id, forKey: ProjectsController.UserKeys.selectedProjectId)
+                UserDefaults.standard.synchronize()
+            }
         } else {
-            UserDefaults.standard.removeObject(forKey: ProjectsController.UserKeys.selectedProjectId)
+            DispatchQueue.main.async {
+                UserDefaults.standard.removeObject(forKey: ProjectsController.UserKeys.selectedProjectId)
+                UserDefaults.standard.synchronize()
+            }
         }
     }
     
