@@ -26,32 +26,42 @@ open class AccountController {
 	open var currentAccount: Account? {
         didSet {
  
+            accountNeverSet = false
+            
             let userDefaults = UserDefaults.standard
             if let account = currentAccount {
-                userDefaults.set(account.user.username, forKey: AccountController.Keys.UsernameField)
-                userDefaults.set(account.recordName, forKey: AccountController.Keys.CloudRecordName)
-                userDefaults.synchronize()
+                DispatchQueue.main.async {
+                    userDefaults.set(account.user.username, forKey: AccountController.Keys.UsernameField)
+                    userDefaults.set(account.recordName, forKey: AccountController.Keys.CloudRecordName)
+                    userDefaults.synchronize()
+                }
             } else {
-                userDefaults.removeObject(forKey: AccountController.Keys.UsernameField)
-                userDefaults.removeObject(forKey: AccountController.Keys.CloudRecordName)
-                userDefaults.synchronize()
+                DispatchQueue.main.async {
+                    userDefaults.removeObject(forKey: AccountController.Keys.UsernameField)
+                    userDefaults.removeObject(forKey: AccountController.Keys.CloudRecordName)
+                    userDefaults.synchronize()
+                }
             }
 
             // Make sure we do this on the main thread, since this call seems to propagate the
             // event on the same thread as it is posted on.
+            print("notifying of change in 'currentAccount'")
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: type(of: self).accountDidChangeNotificationName), object: nil)
+                NotificationCenter.default.post(name: AccountController.accountDidChangeNotification, object: nil)
             }
 		}
 	}
 
-	open static let accountDidChangeNotificationName = "AccountController.accountDidChangeNotification"
+	open static let accountDidChangeNotification = Notification.Name(rawValue: "AccountController.accountDidChangeNotification")
 
+    open static let cloudKitStatusUpdatedNotification = Notification.Name(rawValue: "AccountController.cloudKitStatusUpdated")
+    
 	open static let sharedController = AccountController()
 
     private var group: DispatchGroup
     private var recordID: CKRecordID?
     
+    private var accountNeverSet = true
 
 	// MARK: - Initializers
 
@@ -175,6 +185,9 @@ open class AccountController {
             if error == nil, let recordID = recordID {
                 self.recordID = recordID
                 self.fetchTribalUsername(container.publicCloudDatabase, recordID: recordID) { (Void) -> Void in
+                    // print("notifying of CloudKit update")
+                    self.isCloudKitEnabled = true
+                    NotificationCenter.default.post(name: AccountController.cloudKitStatusUpdatedNotification, object: nil)
                     self.group.leave()
                 }
             } else {
@@ -190,7 +203,9 @@ open class AccountController {
                     case .noAccount:
                         print("no iCloud Account")
                         // set the account to nil to start the onboarding process
-                        self.currentAccount = nil
+                        if self.currentAccount != nil || self.accountNeverSet {
+                            self.currentAccount = nil
+                        }
                         self.isCloudKitEnabled = false
                     case .couldNotDetermine:
                         print("Could not determine")
@@ -199,6 +214,7 @@ open class AccountController {
                         print("Restricted")
                         self.isCloudKitEnabled = false
                     }
+                    NotificationCenter.default.post(name: AccountController.cloudKitStatusUpdatedNotification, object: nil)
                     self.group.leave()
                 }
             }
@@ -222,10 +238,12 @@ open class AccountController {
             }
             
             if results == nil || results?.count == 0 {
-                print("No records found for \(AccountController.Keys.CloudRecordName): \(recordID.recordName)")
+                // print("No records found for \(AccountController.Keys.CloudRecordName): \(recordID.recordName)")
                 // FIXME: May need to delete locally cached data when this happens, or when a new username is registered
                 // Not sure yet, since the iCloud account is still logged in.  
-                self.currentAccount = nil
+                if self.currentAccount != nil || self.accountNeverSet {
+                    self.currentAccount = nil
+                }
                 return
             }
             
@@ -233,18 +251,20 @@ open class AccountController {
                 // Check if this is different than the current account, if set.
                 
                 if let current = self.currentAccount {
-                    if current.recordName == recordID.recordName &&  current.user.username == username {
+                    if current.recordName == recordID.recordName && current.user.username == username {
                         // No need to update the currentAccount
+                        // print("learned of same account controller as 'currentAccount'")
                         return
                     }
                 }
+                // print("setting new 'currentAccount'")
                 self.currentAccount = Account(recordName: recordID.recordName, username: username)
             }
         }
     }
     
     @objc private func identityDidChange() {
-        print("identity did change")
+        // print("identity did change")
         updateAccountStatus()
     }
 
