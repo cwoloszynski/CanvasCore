@@ -92,6 +92,7 @@
 		21E5FC6B1D49431F00A9B281 /* NSRange+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E5FC6A1D49431F00A9B281 /* NSRange+Tests.swift */; };
 		21E5FC6C1D49431F00A9B281 /* NSRange+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E5FC6A1D49431F00A9B281 /* NSRange+Tests.swift */; };
 		CB2AFFE21F67785D00B4ABAB /* ProjectsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2AFFE11F67785D00B4ABAB /* ProjectsController.swift */; };
+		CB70E7541F7500F900C283AF /* CanvasesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E7531F7500F900C283AF /* CanvasesController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -514,6 +515,7 @@
 		CB453D0D1F502329008F4B27 /* CanvasNative.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CanvasNative.xcodeproj; path = ../CanvasNative/CanvasNative.xcodeproj; sourceTree = "<group>"; };
 		CB453D281F50234C008F4B27 /* Crypto.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Crypto.xcodeproj; path = ../Crypto/Crypto.xcodeproj; sourceTree = "<group>"; };
 		CB453D431F502365008F4B27 /* CanvasText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CanvasText.xcodeproj; path = ../CanvasText/CanvasText.xcodeproj; sourceTree = "<group>"; };
+		CB70E7531F7500F900C283AF /* CanvasesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasesController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -704,6 +706,7 @@
 				2175D2FC1D172262009C6845 /* AccountController.swift */,
 				219D22FE1D171B4900D32F65 /* AvatarsController.swift */,
 				219D23021D171B4900D32F65 /* ImgixController.swift */,
+				CB70E7531F7500F900C283AF /* CanvasesController.swift */,
 				CB2AFFE11F67785D00B4ABAB /* ProjectsController.swift */,
 				219D23051D171B4900D32F65 /* PresenceController.swift */,
 				219D23061D171B4900D32F65 /* SearchController.swift */,
@@ -1340,6 +1343,7 @@
 				215D1AE31D426EA30030D804 /* SessionDelegate.swift in Sources */,
 				2175D2FD1D172262009C6845 /* AccountController.swift in Sources */,
 				CB2AFFE21F67785D00B4ABAB /* ProjectsController.swift in Sources */,
+				CB70E7541F7500F900C283AF /* CanvasesController.swift in Sources */,
 				2175D5271D173744009C6845 /* Imgix.swift in Sources */,
 				2175D3431D1722FF009C6845 /* PresenceController.swift in Sources */,
 				2175D3701D1725A0009C6845 /* LightTheme.swift in Sources */,

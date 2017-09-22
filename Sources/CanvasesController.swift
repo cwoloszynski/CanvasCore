@@ -1,19 +1,19 @@
 //
-//  ProjectController.swift
+//  CanvasesController.swift
 //  TeamCanvas
 //
-//  Created by Charlie Woloszynski on 6/26/17.
+//  Created by Charlie Woloszynski on 9/21/17.
 //  Copyright © 2017 Handheld Media, LLC. All rights reserved.
 //
 
 import UIKit
 import CanvasKit
 
-public class ProjectsController : NSObject { // Inherit from NSObject to suport UITableViewDataSource inheritance
+public class CanvasesController : NSObject { // Inherit from NSObject to suport UITableViewDataSource inheritance
     
-    static let defaultFilename = "projectList.json"
+    // static let defaultFilename = "projectList.json"
     
-    static public let `default` = ProjectsController(filename:defaultFilename)
+    // static public let `default` = ProjectsController(filename:defaultFilename)
     
     public enum Keys {
         static let version = "version"
@@ -21,13 +21,13 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
     }
     
     private enum UserKeys {
-        public static let selectedProjectId = "selectedProjectId"
+        public static let selectedCanvasId = "selectedCanvasId"
     }
 
 
     // FIXME: The projects array needs to be managed so changes to it (append, remove) trigger a write to the filesystem.
     
-    public var projects = [Project]()
+    public var canvases = [Canvas]()
     public private(set) var filename: String
     
     static let targetDirectoryURL: URL = { () -> URL in
@@ -45,68 +45,61 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
     init(filename: String) {
         self.filename = filename
         
-        self.url = ProjectsController.targetDirectoryURL.appendingPathComponent(filename)
+        self.url = CanvasesController.targetDirectoryURL.appendingPathComponent(filename)
         super.init()
         
         do {
             try parseFile()
         } catch {
-            print("Error initializating")
+            print("Error initializating Canvases Controller")
             try? writeFile()
         }
     }
     
-    public func setSelectedProject(_ project: Project?) {
-        if let project = project {
+    public func setSelectedCanvas(_ canvas: Canvas?) {
+        if let canvas = canvas {
             DispatchQueue.main.async {
-                UserDefaults.standard.set(project.id, forKey: ProjectsController.UserKeys.selectedProjectId)
+                UserDefaults.standard.set(canvas.id, forKey: CanvasesController.UserKeys.selectedCanvasId)
                 UserDefaults.standard.synchronize()
             }
         } else {
             DispatchQueue.main.async {
-                UserDefaults.standard.removeObject(forKey: ProjectsController.UserKeys.selectedProjectId)
+                UserDefaults.standard.removeObject(forKey: CanvasesController.UserKeys.selectedCanvasId)
                 UserDefaults.standard.synchronize()
             }
         }
     }
     
-    public func getSelectedProject() -> Project {
-        if let id = UserDefaults.standard.string(forKey: ProjectsController.UserKeys.selectedProjectId) {
-            if let project = projects.first(where: { $0.id == id }) {
-                return project
+    public func getSelectedCanvas() -> Canvas {
+        if let id = UserDefaults.standard.string(forKey: CanvasesController.UserKeys.selectedCanvasId) {
+            if let canvas = canvases.first(where: { $0.id == id }) {
+                return canvas
             }
         }
-        return createPersonalProject()
+        return createBlankCanvas()
     }
     
-    public func insert(_ project: Project, at index:Int) {
+    public func insert(_ canvas: Canvas, at index:Int) {
     
-        projects.insert(project, at: index)
+        canvases.insert(canvas, at: index)
     }
     
-    public func remove(at index: Int) -> Project {
+    public func remove(at index: Int) -> Canvas {
         
-        return projects.remove(at: index)
+        return canvases.remove(at: index)
     }
     
     public func exchange(_ indexA: Int, with indexB: Int) {
-        let projectA = projects[indexA]
-        let projectB = projects[indexB]
-        projects.remove(at: indexA)
-        projects.insert(projectB, at: indexA)
-        projects.remove(at: indexB)
-        projects.insert(projectA, at: indexB)
+        let canvasA = canvases[indexA]
+        let canvasB = canvases[indexB]
+        canvases.remove(at: indexA)
+        canvases.insert(canvasB, at: indexA)
+        canvases.remove(at: indexB)
+        canvases.insert(canvasA, at: indexB)
     }
     
-    public func rename(at index: Int, name: String) {
-        projects[index].name = name
-    }
-    
-    public func find(id: String) -> Project {
-        guard let project = projects.first(where: { $0.id == id }) else {
-            fatalError("Unknown project for Id")
-        }
-        return project
+    public func rename(at index: Int, title: String) {
+        canvases[index].title = title
     }
     
     public func persistData() {
@@ -128,7 +121,7 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
             throw SerializationError.invalidJson
         }
         
-        projects.removeAll()
+        canvases.removeAll()
         
         guard let version = json[Keys.version] as? String else {
             throw SerializationError.missing(Keys.version)
@@ -142,38 +135,32 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
         
         if let elements = json[Keys.elements] as? [Any] {
             for element in elements {
-                if let projectJson = element as? [String: Any] {
-                    if let project = Project(dictionary: projectJson as JSONDictionary) {
-                        projects.append(project)
+                if let canvasJson = element as? [String: Any] {
+                    if let canvas = Canvas(dictionary: canvasJson as JSONDictionary) {
+                        canvases.append(canvas)
                     }
                 }
             }
         }
-        
-        let personal = projects.first { $0.isPersonal }
-        if personal == nil {
-            projects.insert(createPersonalProject(), at: 0)
-        }
     }
     
-    private func createPersonalProject() -> Project {
-        let dict: [String: Any] = ["id": "123", "slug": "abc", "name": "Personal", "members_count": UInt(1), "isPersonal": true,  "color": "#808080"]
+    private func createBlankCanvas() -> Canvas {
+        let dict: [String: Any] = ["id": "123"]
         let jsonDict = dict as JSONDictionary
-        return Project(dictionary: jsonDict)!
+        return Canvas(dictionary: jsonDict)!
     }
-    
     private func writeFile() throws {
         
-        var jsonProjects = [[String:Any]]()
+        var jsonCanvases = [[String:Any]]()
         
-        for project in projects {
-            if let jsonProject = project.toJSON() {
-                jsonProjects.append(jsonProject)
+        for canvas in canvases {
+            if let jsonCanvas = canvas.toJSON() {
+                jsonCanvases.append(jsonCanvas)
             }
         }
         
         let json = [Keys.version: "1",
-                    Keys.elements: jsonProjects] as [String : Any]
+                    Keys.elements: jsonCanvases] as [String : Any]
         
         guard let data =  try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
             throw SerializationError.invalidJson
