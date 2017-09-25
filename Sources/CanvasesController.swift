@@ -30,6 +30,8 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
     public var canvases = [Canvas]()
     public private(set) var filename: String
     
+    private let project: Project
+    
     static let targetDirectoryURL: URL = { () -> URL in
         let fileManager = FileManager.default
         guard let url = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else {
@@ -42,8 +44,10 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
     
     private var url: URL
     
-    init(filename: String) {
-        self.filename = filename
+    public init(project: Project) {
+        self.project = project
+        
+        self.filename = project.id
         
         self.url = CanvasesController.targetDirectoryURL.appendingPathComponent(filename)
         super.init()
@@ -76,7 +80,10 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
                 return canvas
             }
         }
-        return createBlankCanvas()
+        // FIXME:  This ! might be dangerous if the getSelectedCanvas happens after the
+        // last canvas is deleted.
+        //
+        return canvases.first!
     }
     
     public func insert(_ canvas: Canvas, at index:Int) {
@@ -111,6 +118,47 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         }
     }
     
+    public func refresh(_ completionHandler: @escaping ((Result<[Canvas]>) -> Void)) {
+    
+    
+        // FIXME:  This should refresh the canvases and call back
+        // async, but right now we just do the following.
+    
+        DispatchQueue.main.async {
+            completionHandler(.success(self.canvases))
+        }
+    }
+    
+    public func createBlankCanvas(_ completion: @escaping ((Result<Canvas>)-> Void)) {
+        
+        DispatchQueue.main.async {
+            
+            let now = NSDate().iso8601String()!
+            let dict: [String: Any] = [Canvas.Keys.Id: "123",
+                                       Canvas.Keys.ProjectId: self.project.id,
+                                       Canvas.Keys.IsWritable: true,
+                                       Canvas.Keys.IsPublicWritable: true,
+                                       Canvas.Keys.UpdatedAt: now,
+                                       Canvas.Keys.Title: "Untitled",
+                                       Canvas.Keys.Summary: "",
+                                       Canvas.Keys.NativeVersion: "0.0.0",
+                                       Canvas.Keys.ArchivedAt: now
+                
+                                        ]
+            let jsonDict = dict as JSONDictionary
+            completion(.success(Canvas(dictionary: jsonDict)!))
+        }
+    }
+    
+    public func archive(canvas: Canvas, completion: @escaping ((Result<Canvas>)-> Void)) {
+        
+        // FIXME: This needs a real implementation
+        
+        DispatchQueue.main.async {
+            completion(.success(canvas))
+        }
+    }
+
     private func parseFile() throws {
         
         guard let data = try? Data(contentsOf: url, options: .alwaysMapped) else {
@@ -144,11 +192,6 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         }
     }
     
-    private func createBlankCanvas() -> Canvas {
-        let dict: [String: Any] = ["id": "123"]
-        let jsonDict = dict as JSONDictionary
-        return Canvas(dictionary: jsonDict)!
-    }
     private func writeFile() throws {
         
         var jsonCanvases = [[String:Any]]()
