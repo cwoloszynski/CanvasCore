@@ -26,13 +26,13 @@ public struct Font {
 				#if os(OSX)
 					return NSFontWeightRegular
 				#else
-					return UIFontWeightRegular
+                    return UIFont.Weight.regular.rawValue
 				#endif
 			case .medium:
 				#if os(OSX)
 					return NSFontWeightMedium
 				#else
-					return UIFontWeightMedium
+                    return UIFont.Weight.medium.rawValue
 				#endif
 			}
 		}
@@ -61,6 +61,6 @@ public struct Font {
 			}
 		#endif
 
-		return X.Font.systemFont(ofSize: size.pointSize, weight: weight.weight)
+        return X.Font.systemFont(ofSize: size.pointSize, weight: UIFont.Weight(rawValue: weight.weight))
 	}
 }

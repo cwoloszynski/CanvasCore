@@ -184,7 +184,7 @@ open class AccountController {
         container.fetchUserRecordID { (recordID, error) -> Void in
             if error == nil, let recordID = recordID {
                 self.recordID = recordID
-                self.fetchTribalUsername(container.publicCloudDatabase, recordID: recordID) { (Void) -> Void in
+                self.fetchTribalUsername(container.publicCloudDatabase, recordID: recordID) { () -> Void in
                     // print("notifying of CloudKit update")
                     self.isCloudKitEnabled = true
                     NotificationCenter.default.post(name: AccountController.cloudKitStatusUpdatedNotification, object: nil)
@@ -222,7 +222,7 @@ open class AccountController {
     }
     
     
-    private func fetchTribalUsername(_ database: CKDatabase, recordID: CKRecordID, completionHandler: @escaping (Void) -> (Void)) {
+    private func fetchTribalUsername(_ database: CKDatabase, recordID: CKRecordID, completionHandler: @escaping () -> (Void)) {
     
         let predicate = NSPredicate(format:"%K == %@", AccountController.Keys.CloudRecordName, recordID.recordName)
         let query = CKQuery(recordType: AccountController.Keys.TribalUsers, predicate: predicate)
