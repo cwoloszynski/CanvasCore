@@ -159,7 +159,9 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
     private func createPersonalProject() -> Project {
         let dict: [String: Any] = ["id": "123", "slug": "abc", "name": "Personal", "members_count": UInt(1), "isPersonal": true,  "color": "#808080"]
         let jsonDict = dict as JSONDictionary
-        return Project(dictionary: jsonDict)!
+        let project = Project(dictionary: jsonDict)!
+        projects.append(project)
+        return project
     }
     
     private func writeFile() throws {

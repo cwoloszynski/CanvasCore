@@ -8,6 +8,7 @@
 
 import UIKit
 import CanvasKit
+import CanvasNative
 
 public class CanvasesController : NSObject { // Inherit from NSObject to suport UITableViewDataSource inheritance
     
@@ -139,7 +140,7 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
                                        Canvas.Keys.IsWritable: true,
                                        Canvas.Keys.IsPublicWritable: true,
                                        Canvas.Keys.UpdatedAt: now,
-                                       Canvas.Keys.Title: "Untitled",
+                                       Canvas.Keys.Title: "\(CanvasNative.leadingNativePrefix)doc-heading\(CanvasNative.trailingNativePrefix) Untitled\n",
                                        Canvas.Keys.Summary: "",
                                        Canvas.Keys.NativeVersion: "0.0.0",
                                        Canvas.Keys.ArchivedAt: now
