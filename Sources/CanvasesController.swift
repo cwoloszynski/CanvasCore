@@ -140,14 +140,16 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
                                        Canvas.Keys.IsWritable: true,
                                        Canvas.Keys.IsPublicWritable: true,
                                        Canvas.Keys.UpdatedAt: now,
-                                       Canvas.Keys.Title: "\(CanvasNative.leadingNativePrefix)doc-heading\(CanvasNative.trailingNativePrefix) Untitled\n",
+                                       Canvas.Keys.Title: "Untitled",
                                        Canvas.Keys.Summary: "",
                                        Canvas.Keys.NativeVersion: "0.0.0",
                                        Canvas.Keys.ArchivedAt: now
                 
                                         ]
             let jsonDict = dict as JSONDictionary
-            completion(.success(Canvas(dictionary: jsonDict)!))
+            guard let canvas = Canvas(dictionary: jsonDict) else { fatalError("Creating blank canvas") }
+            self.insert(canvas, at: 0)
+            completion(.success(canvas))
         }
     }
     
