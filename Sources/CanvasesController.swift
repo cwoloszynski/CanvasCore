@@ -222,6 +222,18 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
             print("File created at \(url.path)")
         }
     }
+    
+    // MARK: CanvasesChangeDelegate
+    public func didUpdate(title: String, forCanvasId canvasId: String) -> IndexPath? {
+        if let index = canvases.index(where: { $0.id == canvasId }) {
+            rename(at: index, title: title)
+            return IndexPath(row: index, section: 0)
+        } else {
+            print("ID not found when renaming a canvas with ID: \(canvasId)")
+            return nil
+        }
+    }
+
 }
 
 
