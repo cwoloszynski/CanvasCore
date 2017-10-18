@@ -88,7 +88,7 @@ public struct Cursor: Equatable {
 		self.end = end
 	}
 
-	public init?(dictionary: [String: AnyObject]) {
+	public init?(dictionary: [String: Any]) {
 		guard let startLine = dictionary["startLine"] as? UInt,
 			let start = dictionary["start"] as? UInt,
 			let endLine = dictionary["endLine"] as? UInt,
