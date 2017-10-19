@@ -157,7 +157,7 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
     }
     
     private func createPersonalProject() -> Project {
-        let dict: [String: Any] = ["id": "123", "slug": "abc", "name": "Personal", "members_count": UInt(1), "isPersonal": true,  "color": "#808080"]
+        let dict: [String: Any] = ["id": UUID().uuidString.lowercased(), "slug": "abc", "name": "Personal", "members_count": UInt(1), "isPersonal": true,  "color": "#808080"]
         let jsonDict = dict as JSONDictionary
         let project = Project(dictionary: jsonDict)!
         projects.append(project)

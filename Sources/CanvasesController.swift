@@ -135,7 +135,7 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         DispatchQueue.main.async {
             
             let now = NSDate().iso8601String()!
-            let dict: [String: Any] = [Canvas.Keys.Id: "123",
+            let dict: [String: Any] = [Canvas.Keys.Id: UUID().uuidString.lowercased(),
                                        Canvas.Keys.ProjectId: self.project.id,
                                        Canvas.Keys.IsWritable: true,
                                        Canvas.Keys.IsPublicWritable: true,
@@ -219,7 +219,7 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         if !fileManager.createFile(atPath: url.path, contents: data, attributes: [:]) {
             print("Error creating file at \(url.path)")
         } else {
-            print("File created at \(url.path)")
+            print("File written at \(url.path)")
         }
     }
     

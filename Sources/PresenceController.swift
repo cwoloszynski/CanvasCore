@@ -52,7 +52,7 @@ open class PresenceController: Accountable {
 		var cursor: Cursor?
 		var clients = [Client]()
 
-		init(canvasID: String, connectionID: String = NSUUID().uuidString.lowercased()) {
+		init(canvasID: String, connectionID: String = UUID().uuidString.lowercased()) {
 			self.canvasID = canvasID
 			self.connectionID = connectionID
 		}
