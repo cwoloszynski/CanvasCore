@@ -219,7 +219,7 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         if !fileManager.createFile(atPath: url.path, contents: data, attributes: [:]) {
             print("Error creating file at \(url.path)")
         } else {
-            print("File written at \(url.path)")
+            print("Canvases file written")
         }
     }
     
