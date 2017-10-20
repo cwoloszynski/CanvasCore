@@ -50,13 +50,13 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         
         self.filename = project.id
         
-        self.url = CanvasesController.targetDirectoryURL.appendingPathComponent(filename)
+        self.url = CanvasesController.targetDirectoryURL.appendingPathComponent(filename).appendingPathComponent("canvasList.json")
         super.init()
         
         do {
             try parseFile()
-        } catch {
-            print("Error initializating Canvases Controller")
+        } catch let error {
+            print("Error initializating Canvases Controller: \(error.localizedDescription)")
             try? writeFile()
         }
     }
@@ -135,7 +135,9 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         DispatchQueue.main.async {
             
             let now = NSDate().iso8601String()!
-            let dict: [String: Any] = [Canvas.Keys.Id: UUID().uuidString.lowercased(),
+            let uuid = UUID().uuidString.lowercased()
+            let id = "canvas-\(uuid)"
+            let dict: [String: Any] = [Canvas.Keys.Id: id,
                                        Canvas.Keys.ProjectId: self.project.id,
                                        Canvas.Keys.IsWritable: true,
                                        Canvas.Keys.IsPublicWritable: true,

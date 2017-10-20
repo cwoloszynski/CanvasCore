@@ -76,7 +76,7 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
                 return project
             }
         }
-        return createPersonalProject()
+        return projects.first!
     }
     
     public func insert(_ project: Project, at index:Int) {
@@ -150,14 +150,17 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
             }
         }
         
-        let personal = projects.first { $0.isPersonal }
+        let personal = projects.first(where: { $0.isPersonal })
         if personal == nil {
             projects.insert(createPersonalProject(), at: 0)
+            try! writeFile()
         }
     }
     
     private func createPersonalProject() -> Project {
-        let dict: [String: Any] = ["id": UUID().uuidString.lowercased(), "slug": "abc", "name": "Personal", "members_count": UInt(1), "isPersonal": true,  "color": "#808080"]
+        let uuid = UUID().uuidString.lowercased()
+        let id = "project-\(uuid)"
+        let dict: [String: Any] = ["id": id, "slug": "abc", "name": "Personal", "members_count": UInt(1), "isPersonal": true,  "color": "#808080"]
         let jsonDict = dict as JSONDictionary
         let project = Project(dictionary: jsonDict)!
         projects.append(project)
