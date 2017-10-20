@@ -50,8 +50,8 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
         
         do {
             try parseFile()
-        } catch {
-            print("Error initializating")
+        } catch let error {
+            print("Error initializating: \(error.localizedDescription)")
             try? writeFile()
         }
     }
@@ -163,13 +163,20 @@ public class ProjectsController : NSObject { // Inherit from NSObject to suport 
         let dict: [String: Any] = ["id": id, "slug": "abc", "name": "Personal", "members_count": UInt(1), "isPersonal": true,  "color": "#808080"]
         let jsonDict = dict as JSONDictionary
         let project = Project(dictionary: jsonDict)!
-        projects.append(project)
+        // projects.append(project)
         return project
     }
     
+    //
+    // Force that there is always a 'personal' project
+    //
     private func writeFile() throws {
         
         var jsonProjects = [[String:Any]]()
+        
+        if projects.first(where: { $0.isPersonal }) == nil {
+            projects.insert(createPersonalProject(), at: 0)
+        }
         
         for project in projects {
             if let jsonProject = project.toJSON() {
