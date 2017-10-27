@@ -144,8 +144,7 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
                                        Canvas.Keys.UpdatedAt: now,
                                        Canvas.Keys.Title: "Untitled",
                                        Canvas.Keys.Summary: "",
-                                       Canvas.Keys.NativeVersion: "0.0.0",
-                                       Canvas.Keys.ArchivedAt: now
+                                       Canvas.Keys.NativeVersion: "0.0.0"
                 
                                         ]
             let jsonDict = dict as JSONDictionary
@@ -221,7 +220,7 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         if !fileManager.createFile(atPath: url.path, contents: data, attributes: [:]) {
             print("Error creating file at \(url.path)")
         } else {
-            print("Canvases file written")
+            print("Canvases file written at \(url.path)")
         }
     }
     
