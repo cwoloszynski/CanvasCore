@@ -54,7 +54,12 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         super.init()
         
         do {
-            try parseFile()
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: url.path) {
+                try parseFile()
+            } else {
+                try? writeFile()
+            }
         } catch let error {
             print("Error initializating Canvases Controller: \(error.localizedDescription)")
             try? writeFile()
