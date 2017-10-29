@@ -61,7 +61,7 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
                 try? writeFile()
             }
         } catch let error {
-            print("Error initializating Canvases Controller: \(error.localizedDescription)")
+            print("Error initializing Canvases Controller: \(error.localizedDescription)")
             try? writeFile()
         }
     }
