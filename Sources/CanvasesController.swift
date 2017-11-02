@@ -119,6 +119,10 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         canvases[index].summary = summary
     }
     
+    fileprivate func toggleWriteLock(at index: Int) {
+        canvases[index].isWritable = !canvases[index].isWritable
+    }
+    
     public func persistData() {
         do {
             try writeFile()
@@ -230,6 +234,18 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
             print("Error creating file at \(url.path)")
         } else {
             print("Canvases file written at \(url.path)")
+        }
+    }
+    
+    public func toggleWriteLock(forCanvasId canvasId: String) -> IndexPath? {
+        if let index = canvases.index(where: { $0.id == canvasId }) {
+            toggleWriteLock(at: index)
+            // FIXME: Not sure I like the try! below
+            try! writeFile()
+            return IndexPath(row: index, section: 0)
+        } else {
+            print("ID not found when toggling the writelock for a canvas with ID: \(canvasId)")
+            return nil
         }
     }
     
