@@ -30,6 +30,8 @@ public enum LocalizedString {
 	case deleteSelectedCanvasCommand
 	case archiveButton
 	case unarchiveButton
+    case lockButton
+    case unlockButton
 	case deleteButton
 	case cancelButton
 	case deleteConfirmationMessage(canvasTitle: String)
@@ -103,6 +105,8 @@ public enum LocalizedString {
 		case .deleteSelectedCanvasCommand: return string("DELETE_SELECTED_CANVAS_COMMAND")
 		case .archiveButton: return string("ARCHIVE_BUTTON")
 		case .unarchiveButton: return string("UNARCHIVE_BUTTON")
+        case .lockButton: return string("LOCK_BUTTON")
+        case .unlockButton: return string("UNLOCK_BUTTON")
 		case .deleteButton: return string("DELETE_BUTTON")
 		case .cancelButton: return string("CANCEL_BUTTON")
 		case .deleteConfirmationMessage(let canvasTitle): return String(format: string("DELETE_CONFIRMATION_MESSAGE"), arguments: [canvasTitle])

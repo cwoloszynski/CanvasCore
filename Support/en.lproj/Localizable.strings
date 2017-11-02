@@ -31,6 +31,8 @@
 "DELETE_SELECTED_CANVAS_COMMAND" = "Delete Selected Canvas";
 "ARCHIVE_BUTTON" = "Archive";
 "UNARCHIVE_BUTTON" = "Unarchive";
+"LOCK_BUTTON" = "Lock";
+"UNLOCK_BUTTON" = "Unlock";
 "DELETE_BUTTON" = "Delete";
 "CANCEL_BUTTON" = "Cancel";
 "DELETE_CONFIRMATION_MESSAGE" = "Are you sure you want to delete “%@”?";
