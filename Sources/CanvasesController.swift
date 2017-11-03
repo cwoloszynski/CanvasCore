@@ -237,6 +237,13 @@ public class CanvasesController : NSObject { // Inherit from NSObject to suport 
         }
     }
     
+    public func delete(canvas: Canvas) {
+        if let index = canvases.index(where: { $0.id == canvas.id }) {
+            let _ = remove(at: index)
+            try! writeFile()
+        }
+    }
+    
     public func toggleWriteLock(forCanvasId canvasId: String) -> IndexPath? {
         if let index = canvases.index(where: { $0.id == canvasId }) {
             toggleWriteLock(at: index)
