@@ -91,6 +91,7 @@
 		21C4EF571D58C5100055EE17 /* URLHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C4EF531D58C4F40055EE17 /* URLHelperTests.swift */; };
 		21E5FC6B1D49431F00A9B281 /* NSRange+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E5FC6A1D49431F00A9B281 /* NSRange+Tests.swift */; };
 		21E5FC6C1D49431F00A9B281 /* NSRange+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E5FC6A1D49431F00A9B281 /* NSRange+Tests.swift */; };
+		CB1E63261FE444E90051489A /* UIColor+HexExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1E63071FE444E90051489A /* UIColor+HexExtensions.swift */; };
 		CB2AFFE21F67785D00B4ABAB /* ProjectsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2AFFE11F67785D00B4ABAB /* ProjectsController.swift */; };
 		CB70E7541F7500F900C283AF /* CanvasesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB70E7531F7500F900C283AF /* CanvasesController.swift */; };
 /* End PBXBuildFile section */
@@ -508,6 +509,7 @@
 		219D23071D171B4900D32F65 /* SpaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpaceView.swift; sourceTree = "<group>"; };
 		21C4EF531D58C4F40055EE17 /* URLHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLHelperTests.swift; sourceTree = "<group>"; };
 		21E5FC6A1D49431F00A9B281 /* NSRange+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRange+Tests.swift"; sourceTree = "<group>"; };
+		CB1E63071FE444E90051489A /* UIColor+HexExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+HexExtensions.swift"; sourceTree = "<group>"; };
 		CB2AFFE11F67785D00B4ABAB /* ProjectsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsController.swift; sourceTree = "<group>"; };
 		CB453CC71F5022DA008F4B27 /* Cache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cache.xcodeproj; path = ../Cache/Cache.xcodeproj; sourceTree = "<group>"; };
 		CB453CD81F5022FB008F4B27 /* X.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = X.xcodeproj; path = ../X/X.xcodeproj; sourceTree = "<group>"; };
@@ -687,6 +689,7 @@
 		2189B7621D75C9EA00D39165 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CB1E63071FE444E90051489A /* UIColor+HexExtensions.swift */,
 				2189B75F1D75C9D400D39165 /* Project+CanvasCore.swift */,
 			);
 			name = Extensions;
@@ -1337,6 +1340,7 @@
 				2175D4F51D1736FD009C6845 /* SpaceView.swift in Sources */,
 				2189B7601D75C9D400D39165 /* Project+CanvasCore.swift in Sources */,
 				2175D3491D17236D009C6845 /* Configuration.swift in Sources */,
+				CB1E63261FE444E90051489A /* UIColor+HexExtensions.swift in Sources */,
 				213BA1DB1D58E1C400A51B07 /* RemoteCursorsController.swift in Sources */,
 				2175D3451D172320009C6845 /* Cursor.swift in Sources */,
 				2175D52B1D1737DD009C6845 /* ImgixController.swift in Sources */,

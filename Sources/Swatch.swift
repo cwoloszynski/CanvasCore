@@ -26,10 +26,12 @@ public struct Swatch {
 	public static let pink = Color(red: 1, green: 0.216, blue: 0.502, alpha: 1)
 	public static let yellow = Color(red: 1, green: 0.942, blue: 0.716, alpha: 1)
     public static let red = Color(red:0.976, green: 0.306, blue: 0.255, alpha: 1)
+    
+    public static let ultraviolet = Color(hex: "#5F4B8B")! // Ultra Violet
 
 	// MARK: - Shared
 
-	public static let brand = blue
+	public static let brand = ultraviolet
 	public static let destructive = red
 	public static let comment = yellow
 
