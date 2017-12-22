@@ -11,7 +11,7 @@ import CanvasNative
 @testable import CanvasCore
 
 class CursorTests: XCTestCase {
-	let document = Document(backingString: "⧙doc-heading⧘Cursor Test\nHello\n⧙unordered-list-0⧘- List item\n⧙blockquote⧘> This is a [link](http://example.com).\nThe end")
+	let document = Document(backingString: "⧙doc-heading-fake-uuid⧘Cursor Test\nHello\n⧙unordered-list-0⧘- List item\n⧙blockquote⧘> This is a [link](http://example.com).\nThe end")
 
 	func testRangeToCursorMulti() {
 		let range = NSRange(location: 14, length: 55)
