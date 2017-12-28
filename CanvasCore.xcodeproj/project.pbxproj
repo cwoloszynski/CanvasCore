@@ -529,6 +529,13 @@
 			remoteGlobalIDString = 211483C31C8A3034002CA206;
 			remoteInfo = "CanvasText-iOS";
 		};
+		CB7D84F11FF57FED00BD386C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CBCF360F1FE9913E0067C7B5 /* OperationalTransformation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CBD8912B1FEAF3D200C6DA4E;
+			remoteInfo = OperationalTransformationTests;
+		};
 		CBCF36161FE9913E0067C7B5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CBCF360F1FE9913E0067C7B5 /* OperationalTransformation.xcodeproj */;
@@ -536,26 +543,12 @@
 			remoteGlobalIDString = 215E6D251C7520BD00126FE9;
 			remoteInfo = "OperationalTransformation-iOS";
 		};
-		CBCF36181FE9913E0067C7B5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CBCF360F1FE9913E0067C7B5 /* OperationalTransformation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 215E6D2F1C7520BD00126FE9;
-			remoteInfo = "OperationalTransformationTests-iOS";
-		};
 		CBCF361A1FE9913E0067C7B5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CBCF360F1FE9913E0067C7B5 /* OperationalTransformation.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 215E6D531C7532E200126FE9;
 			remoteInfo = "OperationalTransformation-macOS";
-		};
-		CBCF361C1FE9913E0067C7B5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CBCF360F1FE9913E0067C7B5 /* OperationalTransformation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 215E6D5C1C7532E200126FE9;
-			remoteInfo = "OperationalTransformationTests-macOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1026,9 +1019,8 @@
 			isa = PBXGroup;
 			children = (
 				CBCF36171FE9913E0067C7B5 /* OperationalTransformation.framework */,
-				CBCF36191FE9913E0067C7B5 /* OperationalTransformation.xctest */,
 				CBCF361B1FE9913E0067C7B5 /* OperationalTransformation.framework */,
-				CBCF361D1FE9913E0067C7B5 /* OperationalTransformation.xctest */,
+				CB7D84F21FF57FED00BD386C /* OperationalTransformationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1142,7 +1134,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Canvas Labs, Inc.";
 				TargetAttributes = {
 					216B1C8B1D17199B007D022B = {
@@ -1606,6 +1598,13 @@
 			remoteRef = CB453D551F502365008F4B27 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CB7D84F21FF57FED00BD386C /* OperationalTransformationTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OperationalTransformationTests.xctest;
+			remoteRef = CB7D84F11FF57FED00BD386C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		CBCF36171FE9913E0067C7B5 /* OperationalTransformation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1613,25 +1612,11 @@
 			remoteRef = CBCF36161FE9913E0067C7B5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CBCF36191FE9913E0067C7B5 /* OperationalTransformation.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = OperationalTransformation.xctest;
-			remoteRef = CBCF36181FE9913E0067C7B5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CBCF361B1FE9913E0067C7B5 /* OperationalTransformation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = OperationalTransformation.framework;
 			remoteRef = CBCF361A1FE9913E0067C7B5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CBCF361D1FE9913E0067C7B5 /* OperationalTransformation.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = OperationalTransformation.xctest;
-			remoteRef = CBCF361C1FE9913E0067C7B5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1920,7 +1905,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
